@@ -1,5 +1,7 @@
 package exday4;
 
+import IEmail;
+
 public class CellPhone implements IPhone,IEmail{
     private String mailAddress;
     private String number;

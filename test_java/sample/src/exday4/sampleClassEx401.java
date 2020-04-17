@@ -1,5 +1,7 @@
 package exday4;
 
+import IEmail;
+
 public class sampleClassEx401{
     
     public static void main(String[] args){
