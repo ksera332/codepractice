@@ -1,3 +1,5 @@
+//参考URL https://qiita.com/hey_cube/items/080b7f0a00728c65b7c0
+
 package app;
 
 import java.util.Random;
