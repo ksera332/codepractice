@@ -1,0 +1,218 @@
+{
+    // IntelliSense を使用して利用可能な属性を学べます。
+    // 既存の属性の説明をホバーして表示します。
+    // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug (Launch) - Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-dentaku1<Calculator>",
+            "request": "launch",
+            "mainClass": "app.dentaku1",
+            "projectName": "Calculator"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-App<CodeBreakerFirst>",
+            "request": "launch",
+            "mainClass": "app.App",
+            "projectName": "CodeBreakerFirst"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-App<create_maze>",
+            "request": "launch",
+            "mainClass": "app.App",
+            "projectName": "create_maze",
+            "args": ["15"]
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-App<javaex>",
+            "request": "launch",
+            "mainClass": "app.App",
+            "projectName": "javaex"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-SampleClassEx402<javaex>",
+            "request": "launch",
+            "mainClass": "exday4.SampleClassEx402",
+            "projectName": "javaex"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Main<object_01>",
+            "request": "launch",
+            "mainClass": "object_01.Main",
+            "projectName": "object_01"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-App<sample>",
+            "request": "launch",
+            "mainClass": "app.App",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sample101<sample>",
+            "request": "launch",
+            "mainClass": "day1.sample101",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Sample202<sample>",
+            "request": "launch",
+            "mainClass": "day2.Sample202",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sample201<sample>",
+            "request": "launch",
+            "mainClass": "day2.sample201",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sample204<sample>",
+            "request": "launch",
+            "mainClass": "day2.sample204",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sample301<sample>",
+            "request": "launch",
+            "mainClass": "day3.sample301",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sample304<sample>",
+            "request": "launch",
+            "mainClass": "day3.sample304",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sample305<sample>",
+            "request": "launch",
+            "mainClass": "day3.sample305",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sample401<sample>",
+            "request": "launch",
+            "mainClass": "day4.sample401",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sample403<sample>",
+            "request": "launch",
+            "mainClass": "day4.sample403",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sample501<sample>",
+            "request": "launch",
+            "mainClass": "day5.sample501",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sample502<sample>",
+            "request": "launch",
+            "mainClass": "day5.sample502",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sample601<sample>",
+            "request": "launch",
+            "mainClass": "day6.sample601",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sample602<sample>",
+            "request": "launch",
+            "mainClass": "day6.sample602",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sample701<sample>",
+            "request": "launch",
+            "mainClass": "day7.sample701",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sample702<sample>",
+            "request": "launch",
+            "mainClass": "day7.sample702",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sampleEX102<sample>",
+            "request": "launch",
+            "mainClass": "exday1.sampleEX102",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sampleEx101<sample>",
+            "request": "launch",
+            "mainClass": "exday1.sampleEx101",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sampleEx201<sample>",
+            "request": "launch",
+            "mainClass": "exday2.sampleEx201",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sampleEx202<sample>",
+            "request": "launch",
+            "mainClass": "exday2.sampleEx202",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sampleClassEx202<sample>",
+            "request": "launch",
+            "mainClass": "exday3.sampleClassEx202",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sampleClassEx301<sample>",
+            "request": "launch",
+            "mainClass": "exday3.sampleClassEx301",
+            "projectName": "sample"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-sampleClassEx401<sample>",
+            "request": "launch",
+            "mainClass": "exday4.sampleClassEx401",
+            "projectName": "sample"
+        }
+    ]
+}

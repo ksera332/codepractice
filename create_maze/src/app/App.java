@@ -7,304 +7,324 @@ import java.util.Scanner;
 
 public class App {
 
-    static int mazeSize = 30;
-    //壁をTrue 道をFalse
+    static int mazeSize = 0;
+    // 壁: true, 道: false
     static boolean[][] wall;
-    static int row,col;
+    static int row;
+    static int col;
     static Stack<Integer> rowStack = new Stack<Integer>();
     static Stack<Integer> colStack = new Stack<Integer>();
-    static int usrRow = mazeSize - 1,usrCol = 1,goalRow = 0,goalCol = mazeSize - 2;
+    static int usrRow = mazeSize - 1, usrCol = 1, goalRow = 0, goalCol = mazeSize - 2;
 
-    public static void main(String[] args) {
-        
-        if(args.length != 1){
-            System.out.println("Usage: java maze [mazeSize]");
-            return;
+public static void main(String[] args) {
+
+    /*
+    if (args.length != 1) {
+        System.out.println("Usage: java Maze [mazeSize]");
+        return;
+    }
+    */
+
+    Scanner scan = new Scanner(System.in);
+    System.out.print("input mazesize > ");
+    mazeSize = scan.nextInt();
+    
+    wall = new boolean[mazeSize][mazeSize];
+
+    printUsage();
+
+    createMaze();
+    resetUsr();
+    resetGoal();
+
+    
+    String keys = "";
+    char key;
+    long start = System.currentTimeMillis(), end;
+
+    while (true) {
+        printMaze();
+        keys = scan.next();
+        key = keys.charAt(keys.length() - 1);
+        moveUsr(key);
+
+        if (usrRow == goalRow && usrCol == goalCol) {
+            end = System.currentTimeMillis();
+            printRezult((end - start) / 1000);
+            break;
         }
+    }
+    scan.close();
+}
 
-        //Integer.parseIntは文字列→Intらしい
-        mazeSize = Integer.parseInt((args[0]));
-        wall = new boolean[mazeSize][mazeSize];
+// 新しく迷路を作るメソッド
+static void createMaze() {
+    // 初期化
+    for (int i = 0; i < mazeSize; i++) {
+        for (int j = 0; j < mazeSize; j++) {
+            wall[i][j] = true;
+        }
+    }
 
-        printUsage();
+    // ランダムに開始位置を選ぶ（1 〜 mazeSize - 2）
+    Random rnd = new Random();
+    row = rnd.nextInt(mazeSize - 2) + 1;
+    col = rnd.nextInt(mazeSize - 2) + 1;
+    wall[row][col] = false;
+    rowStack.push(row);
+    colStack.push(col);
 
-        createMaze();
-        resetUsr();
-        resetGoal();
+    boolean continueFlag = true;
 
-        Scanner scan = new Scanner(System.in);
-        scan.close();
+    // 以下、wall[][]全体を埋めるまで繰り返し
+    while (continueFlag) {
 
-        String keys = "";
-        char key;
-        long start = System.currentTimeMillis(),end;
+        // 上下左右のいずれかに限界まで道を伸ばす
+        extendPath();
 
-        while(true){
-            printMaze();
-            keys = scan.next();
-            key = keys.charAt(keys.length() - 1);
-            moveUsr(key);
+        // 既にある道から次の開始位置を選ぶ（0 〜 mazeSize - 1（かつ 偶数？））
+        continueFlag = false;
 
-            if(usrRow == goalRow && usrCol == goalCol){
-                end = System.currentTimeMillis();
-                printResult((end - start) / 1000);
+        while (!rowStack.empty() && !colStack.empty()) {
+            row = rowStack.pop();
+            col = colStack.pop();
+
+            if (/*row % 2 == 0 && col % 2 == 0 && */canExtendPath()) {
+                continueFlag = true;
                 break;
             }
         }
     }
+}
 
-    //迷路を作るメソッド
-    static void createMaze(){
-        //穴掘り法を使うのでまず全部壁にする
-        for(int i = 0;i<mazeSize;i++){
-            for(int j = 0;j<mazeSize;j++){
-                wall[i][j] = true;
+// 迷路を表示するメソッド
+static void printMaze() {
+    for (int i = 0; i < mazeSize; i++) {
+        for (int j = 0; j < mazeSize; j++) {
+            if (i == usrRow && j == usrCol) {
+                System.out.print("**");
+            } else if (i == goalRow && j == goalCol) {
+                System.out.print("GO");
+            } else if (wall[i][j]) {
+                System.out.print("[]");
+            } else {
+                System.out.print("  ");
             }
         }
+        System.out.println();
+    }
+}
 
-        //開始位置をランダム選択(1 ~ mazeSize-2)
-        Random rnd = new Random();
-        row = rnd.nextInt(mazeSize-2) + 1;
-        col = rnd.nextInt(mazeSize-2) + 1;
-        wall[row][col] = false;
+// 道を拡張するメソッド
+static void extendPath() {
+    boolean extendFlag = true;
 
-        rowStack.push(row);
-        colStack.push(col);
+    while (extendFlag) {
+        extendFlag = extendPathSub();
+    }
+}
 
-        boolean continueFlag = true;
+// 道の拡張に成功したらtrue、失敗したらfalseを返すメソッド
+static boolean extendPathSub() {
+    Random rmd = new Random();
+    // 上: 0, 下: 1, 左: 2, 右: 3
+    int direction = rmd.nextInt(4);
 
-        while(continueFlag){
-
+    for (int i = 0; i < 4; i++) {
+        direction = (direction + i) % 4;
+        if (canExtendPathWithDir(direction)) {
+            movePoint(direction);
+            return true;
         }
     }
 
-    //迷路を表示するメソッド
-    static void printMaze(){
-        for(int i = 0;i < mazeSize;i++){
-            for(int j = 0;j < mazeSize;j++){
-                if(i == usrRow && j == usrCol){
-                    System.out.println("**");
-                }
-                else if(i == goalRow && j == goalCol){
-                    System.out.println("Go");
-                }
-                else if (wall[i][j]){
-                    System.out.println("[]");
-                }
-                else{
-                    System.out.println(" ");
-                }
-                System.out.println();
-            }
-        }
+    return false;
+}
+
+// 指定した方向へ拡張可能ならばtrue、不可能ならばfalseを返すメソッド
+static boolean canExtendPathWithDir(int direction) {
+    int exRow = row, exCol = col;
+
+    switch (direction) {
+        case 0:	// 上
+            exRow--;
+            break;
+
+        case 1:	// 下
+            exRow++;
+            break;
+
+        case 2:	// 左
+            exCol--;
+            break;
+
+        case 3:	// 右
+            exCol++;
+            break;
     }
 
-    //穴を掘る
-    static void extendPath(){
-        boolean extendFlag = true;
-        while(extendFlag){
-            extendFlag = extendPathSub();
-        }
-    }
-
-    //穴を掘れたらTrue、ミスったらFalse
-    static boolean extendPathSub(){
-        Random rnd = new Random();
-        //上:0下:1左:2右:3
-        int direction = rnd.nextInt(4);
-
-        for(int i = 0;i<4;i++){
-            direction = (direction+i) % 4;
-            if(canExtendPathWithDir(direction)){
-                movePoint(direction);
-                return true;
-            }
-        }
+    if (countSurroundingPath(exRow, exCol) > 1) {
         return false;
     }
 
-    //掘れるかどうかの判定
-    static boolean canExtendPathWithDir(int direction){
-        int exRow = row,exCol = col;
+    return true;
+}
 
-        switch(direction){
-            case 0://上
-                exRow--;
-                break;
-            
-            case 1://下
-                exRow++;
-                break;
-            
-            case 2://左
-                exCol--;
-                break;
+// 周囲1マスにある道の数を数えるメソッド
+static int countSurroundingPath(int row, int col) {
+    int num = 0;
 
-            case 3://右
-                exCol++;
-                break;
-        }
-
-        if(countSurroundingPath(exRow,exCol) > 1){
-            return false;
-        }
-
-        return true;
+    if (row - 1 < 0 || !wall[row - 1][col]) {
+        num++;
+    }
+    if (row + 1 > mazeSize - 1 || !wall[row + 1][col]) {
+        num++;
+    }
+    if (col - 1 < 0 || !wall[row][col - 1]) {
+        num++;
+    }
+    if (col + 1 > mazeSize - 1 || !wall[row][col + 1]) {
+        num++;
     }
 
-    //周囲1マスにある道の数を数える
-    static int countSurroundingPath(int row,int col){
-        int num = 0;
+    return num;
+}
 
-        if (row - 1 < 0 || !wall[row - 1][col]){
-            num++;
-        }
-        if(row + 1 > mazeSize-1 || !wall[row +1][col]){
-            num++;
-        }
-        if(col - 1 <0 || !wall[row][col - 1]){
-            num++;
-        }
-        if(col +1>mazeSize-1 || !wall[row][col + 1]){
-            num++;
-        }
-        return num;
+// 指定した方向へ1マスrowとcolを移動させるメソッド
+static void movePoint(int direction) {
+    switch (direction) {
+        case 0:	// 上
+            row--;
+            break;
+
+        case 1:	// 下
+            row++;
+            break;
+
+        case 2:	// 左
+            col--;
+            break;
+
+        case 3:	// 右
+            col++;
+            break;
     }
 
-    //指定した方向1マスrowとcolを移動させるメソッド
-    static void movePoint(int direction){
-        switch(direction){
-            case 0://上
-                row--;
-                break;
+    wall[row][col] = false;
+    rowStack.push(row);
+    colStack.push(col);
+}
 
-            case 1://下
-                row++;
-                break;
+// 上下左右いずれかの方向へ移動できるならtrue、できないならfalseを返すメソッド
+static boolean canExtendPath() {
+    return (canExtendPathWithDir(0) || canExtendPathWithDir(1) || canExtendPathWithDir(2) || canExtendPathWithDir(3));
+}
 
-            case 2://左
-                col--;
-                break;
+// ユーザを初期位置に動かすメソッド
+static void resetUsr() {
+    usrRow = mazeSize - 1;
+    usrCol = 1;
 
-            case 3://右
-                col++;
-                break;
+    while (true) {
+        if (wall[usrRow - 1][usrCol]) {
+            usrCol++;
+        } else {
+            break;
         }
-        wall[row][col] = false;
-        rowStack.push(row);
-        colStack.push(col);
-    }
-    static boolean canExtendPathWithDir(){
-        return (canExtendPathWithDir(0) || canExtendPathWithDir(1) || canExtendPathWithDir(2) || canExtendPathWithDir(3));
     }
 
-    //ユーザー初期位置に動かす
-    static void resetUsr(){
-        usrRow = mazeSize - 1;
-        usrCol = 1;
+    wall[usrRow][usrCol] = false;
+}
 
-        while(true){
-            if(wall[usrRow - 1][usrCol]){
-                usrCol++;
-            }
-            else{
-                break;
-            }
+// ゴールを初期位置に動かすメソッド
+static void resetGoal() {
+    goalRow = 0;
+    goalCol = mazeSize - 2;
+
+    while (true) {
+        if (wall[goalRow + 1][goalCol]) {
+            goalCol--;
+        } else {
+            break;
         }
-        wall[usrRow][usrCol]= false;
     }
 
-    //ゴールを初期位置に動かすメソッド
-    static void resetGoal(){
-        goalRow = 0;
-        goalCol = mazeSize - 2;
+    wall[goalRow][goalCol] = false;
+}
 
-        while(true){
-            if(wall[goalRow + 1][goalCol]){
-                goalCol--;
-            }
-            else{
-                break;
-            }
-        }
-        wall[goalRow][goalCol] = false;
-    }
+// ユーザを動かすメソッド
+static void moveUsr(char key) {
+    String errMes = "You can not move there.";
+    int exUsrRow = usrRow, exUsrCol = usrCol;
 
-    static void moveUsr(char key){
-        String errMes = "You can not move there";
-        int exUsrRow = usrRow,exUsrCol = usrCol;
-
-        switch(key){
-            case 'w'://上
-                exUsrRow--;
-                break;
-            
-            case 's'://下
-                exUsrRow++;
-                break;
-
-            case 'a'://左
-                exUsrCol--;
-                break;
-
-            case 'd'://右
-                exUsrCol++;
-                break;
-
-            case 'R'://リスタート
-                resetUsr();
-                return;
-            
-            case 'N'://ニューゲーム
-                createMaze();
-                resetUsr();
-                resetGoal();
-                return;
-
-            default:
+    switch (key) {
+        case 'w':	// 上
+            exUsrRow--;
+            break;
+        case 's':	// 下
+            exUsrRow++;
+            break;
+        case 'a':	// 左
+            exUsrCol--;
+            break;
+        case 'd':	// 右
+            exUsrCol++;
+            break;
+        case 'R':	// リスタート
+            resetUsr();
+            return;
+        case 'N':	// 新規ゲームの開始
+            createMaze();
+            resetUsr();
+            resetGoal();
+            return;
+        default:
             System.out.println(errMes);
             return;
-        }
-
-        if(exUsrRow > mazeSize -1 || wall[exUsrRow][exUsrCol]){
-            System.out.println(errMes);
-            return;
-        }
-        usrRow = exUsrRow;
-        usrCol = exUsrCol;
     }
 
-    static void printResult(long secondTime){
-        System.out.println();
-        System.out.println("+-+-+-+-+-+-+-+-+-+");
-        System.out.println("|c|o|n|g|r|a|t|s|!|");
-        System.out.println("+-+-+-+-+-+-+-+-+-+");
-        System.out.println();
-
-        System.out.println("Your time is " + secondTime + " seconds.");
-        System.out.println();
+    if (exUsrRow > mazeSize - 1 || wall[exUsrRow][exUsrCol]) {
+        System.out.println(errMes);
+        return;
     }
 
-    // 遊び方を表示するメソッド
-	static void printUsage() {
-		System.out.println("Welcome to " + mazeSize + "*" + mazeSize + " Maze!");
-		System.out.println();
+    usrRow = exUsrRow;
+    usrCol = exUsrCol;
+}
 
-		System.out.println("Usage:");
-		System.out.println("** in the lower left is YOU.");
-		System.out.println("GO in the upper right is GOAL.");
-		System.out.println();
+// 結果を表示するメソッド
+static void printRezult(long secondTime) {
+    System.out.println();
+    System.out.println("+-+-+-+-+-+-+-+-+-+");
+    System.out.println("|c|o|n|g|r|a|t|s|!|");
+    System.out.println("+-+-+-+-+-+-+-+-+-+");
+    System.out.println();
 
-		System.out.println("Press the w key and the enter key to move UP.");
-		System.out.println("Press the s key and the enter key to move DOWN.");
-		System.out.println("Press the a key and the enter key to move LEFT.");
-		System.out.println("Press the d key and the enter key to move RIGHT.");
-		System.out.println();
+    System.out.println("Your time is " + secondTime + " seconds.");
+    System.out.println();
+}
 
-		System.out.println("Press the R key and the enter key to RESTART game.");
-		System.out.println("Press the N key and the enter key to start NEW game.");
-		System.out.println();
+// 遊び方を表示するメソッド
+static void printUsage() {
+    System.out.println("Welcome to " + mazeSize + "*" + mazeSize + " Maze!");
+    System.out.println();
 
-		System.out.println("GAME START!!");
-	}
- }
+    System.out.println("Usage:");
+    System.out.println("** in the lower left is YOU.");
+    System.out.println("GO in the upper right is GOAL.");
+    System.out.println();
+
+    System.out.println("Press the w key and the enter key to move UP.");
+    System.out.println("Press the s key and the enter key to move DOWN.");
+    System.out.println("Press the a key and the enter key to move LEFT.");
+    System.out.println("Press the d key and the enter key to move RIGHT.");
+    System.out.println();
+
+    System.out.println("Press the R key and the enter key to RESTART game.");
+    System.out.println("Press the N key and the enter key to start NEW game.");
+    System.out.println();
+
+    System.out.println("GAME START!!");
+}
+
+}
