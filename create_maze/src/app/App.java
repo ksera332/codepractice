@@ -3,8 +3,8 @@
 package app;
 
 import java.util.Random;
-import java.util.Stack;
 import java.util.Scanner;
+import java.util.Stack;
 
 
 public class App {
@@ -30,7 +30,7 @@ public static void main(String[] args) {
     Scanner scan = new Scanner(System.in);
     System.out.print("input mazesize > ");
     mazeSize = scan.nextInt();
-    
+
     wall = new boolean[mazeSize][mazeSize];
 
     printUsage();
@@ -39,7 +39,7 @@ public static void main(String[] args) {
     resetUsr();
     resetGoal();
 
-    
+
     String keys = "";
     char key;
     long start = System.currentTimeMillis(), end;
