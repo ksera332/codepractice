@@ -13,5 +13,7 @@ var person = {
         return this.firstName + " " + this.lastName;
     }
 }
-
 document.getElementById("test").innerHTML = person.fullName();
+
+var txt = "slice test string";
+document.getElementById("slice").innerHTML = txt.slice(3,8);
