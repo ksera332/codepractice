@@ -24,3 +24,8 @@ for(var i = 0;i<cars.length;i++){
     text += cars[i] + "<br>";
 }
 document.getElementById("loop").innerHTML = text;
+
+var x;
+for(x of cars){
+    document.write(x + "<br>");
+}
