@@ -66,6 +66,8 @@ fn main() {
         number -= 1;
     }
     println!("LiftOff!!!");
+
+    judgh(9)
 }
 
 fn another_function(x: i32){
@@ -79,4 +81,14 @@ fn five() -> i32{
 
 fn plus_one(x: i32) -> i32{
     x + 1
+}
+
+fn judgh(number: i32){
+    let number = number;
+
+    if number < 5{
+        println!("condition was true")
+    }else{
+        println!("condition was false")
+    }
 }
