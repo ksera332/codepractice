@@ -67,7 +67,18 @@ fn main() {
     }
     println!("LiftOff!!!");
 
-    judgh(9)
+    judgh(9);
+
+    let p = Person{
+        name:String::from("john"),
+        age:8
+    };
+
+    let count:i32;
+
+    for count in 0..10{
+        println!("count:{}",count);
+    }
 }
 
 fn another_function(x: i32){
@@ -91,4 +102,9 @@ fn judgh(number: i32){
     }else{
         println!("condition was false")
     }
+}
+
+struct Person{
+    name:String,
+    age:u32,
 }
