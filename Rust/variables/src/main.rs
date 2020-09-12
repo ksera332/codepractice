@@ -79,6 +79,8 @@ fn main() {
     for count in 0..10{
         println!("count:{}",count);
     }
+
+    
 }
 
 fn another_function(x: i32){
@@ -107,4 +109,20 @@ fn judgh(number: i32){
 struct Person{
     name:String,
     age:u32,
+}
+
+enum Coin{
+    Penny,
+    Nickel,
+    Dime,
+    Quarter,
+}
+
+fn value_in_cents(coin:Coin)-> u32{
+    match coin {
+        Coin::Penny => 1,
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter => 25,
+    }
 }
