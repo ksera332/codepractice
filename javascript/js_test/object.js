@@ -19,3 +19,5 @@ console.log(color.hasOwnProperty("bule"));
 const merged = Object.assign({},obj,color);
 
 console.log(merged);
+
+console.log(typeof Object.prototype.toString);
