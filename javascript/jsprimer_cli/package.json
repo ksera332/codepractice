@@ -1,0 +1,18 @@
+{
+  "name": "nodecli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "mocha test/"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^5.0.0",
+    "marked": "^1.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^7.2.0"
+  }
+}
